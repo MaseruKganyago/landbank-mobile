@@ -7,6 +7,7 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  Image,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CustomButton, CustomInput } from '../../components';
@@ -31,7 +32,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
   useEffect(() => {
     if (token) navigation.navigate('InspectorDashboard');
-  }, [token]);
+  }, [token, navigation]);
 
   const validateForm = () => {
     const newErrors: { email?: string; password?: string } = {};
@@ -76,6 +77,14 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.content}>
+          <View style={styles.logoContainer}>
+            <Image
+              source={require('../../assets/app-logo.png')}
+              style={styles.logo}
+              resizeMode="contain"
+            />
+            <Text style={styles.appName}>Land Bank</Text>
+          </View>
           <Text style={styles.title}>Welcome Back</Text>
           <Text style={styles.subtitle}>Sign in to continue</Text>
 
@@ -126,8 +135,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     justifyContent: 'center',
   },
+  logoContainer: {
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  logo: {
+    width: 100,
+    height: 100,
+  },
+  appName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#6B9BD1',
+    marginTop: 10,
+    letterSpacing: 1,
+  },
   title: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#2c3e50',
