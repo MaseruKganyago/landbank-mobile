@@ -46,6 +46,7 @@ export const LandInfrastructureForm: FC<LandInfrastructureFormProps> = ({
       storageFacilities: false,
     },
   });
+  const [photos, setPhotos] = useState<string[]>([]);
 
   const updateInfrastructure = (key: string, value: any) => {
     setFormData(prev => ({
@@ -179,9 +180,15 @@ export const LandInfrastructureForm: FC<LandInfrastructureFormProps> = ({
           <Text style={styles.uploadTitle}>Upload Photo for each item</Text>
 
           <View style={styles.photoUploadContainer}>
-            <PhotoUploadBox hasPhoto={false} />
-            <PhotoUploadBox hasPhoto={false} />
-            <PhotoUploadBox isCamera={true} />
+            <PhotoUploadBox
+              multiplePhotos={true}
+              photos={photos}
+              maxPhotos={5}
+              onAddPhoto={photoUri => setPhotos(prev => [...prev, photoUri])}
+              onRemovePhoto={index =>
+                setPhotos(prev => prev.filter((_, i) => i !== index))
+              }
+            />
           </View>
         </View>
       </ScrollView>

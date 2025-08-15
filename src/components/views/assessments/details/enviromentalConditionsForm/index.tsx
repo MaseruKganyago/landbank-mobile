@@ -50,6 +50,7 @@ export const EnvironmentalConditionsForm: FC<
   });
 
   const [showOtpModal, setShowOtpModal] = useState(false);
+  const [photos, setPhotos] = useState<string[]>([]);
 
   const updateEnvironmentalRisk = (key: string, value: any) => {
     setFormData(prev => ({
@@ -83,6 +84,14 @@ export const EnvironmentalConditionsForm: FC<
 
   const handleCloseModal = () => {
     setShowOtpModal(false);
+  };
+
+  const handleAddPhoto = (photoUri: string) => {
+    setPhotos(prev => [...prev, photoUri]);
+  };
+
+  const handleRemovePhoto = (index: number) => {
+    setPhotos(prev => prev.filter((_, i) => i !== index));
   };
 
   return (
@@ -184,9 +193,13 @@ export const EnvironmentalConditionsForm: FC<
           <Text style={styles.uploadTitle}>Upload Photo for each item</Text>
 
           <View style={styles.photoUploadContainer}>
-            <PhotoUploadBox hasPhoto={false} />
-            <PhotoUploadBox hasPhoto={false} />
-            <PhotoUploadBox isCamera={true} />
+            <PhotoUploadBox 
+              multiplePhotos={true}
+              photos={photos}
+              maxPhotos={5}
+              onAddPhoto={handleAddPhoto}
+              onRemovePhoto={handleRemovePhoto}
+            />
           </View>
         </View>
       </ScrollView>
