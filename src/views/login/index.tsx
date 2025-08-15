@@ -79,7 +79,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         <View style={styles.content}>
           <View style={styles.logoContainer}>
             <Image
-              source={require('../../assets/app-logo.png')}
+              source={{
+                uri: 'https://firebasestorage.googleapis.com/v0/b/pd-agrietech.appspot.com/o/SAPS%2Fapp-logo%201.png?alt=media&token=faa71004-fd4e-4632-a831-f5a0a7c5579a',
+              }}
               style={styles.logo}
               resizeMode="contain"
             />

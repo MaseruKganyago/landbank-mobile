@@ -70,10 +70,42 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 10,
   },
+  confirmLocationHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
   confirmLocationText: {
     fontSize: 14,
     color: '#E74C3C',
     fontWeight: '500',
+  },
+  resolveLocationText: {
+    fontSize: 14,
+    color: '#ebf0ebff',
+    fontWeight: '500',
+  },
+  confirmLocationButton: {
+    backgroundColor: '#6B9BD1',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  confirmLocationButtonValidated: {
+    backgroundColor: '#27AE60',
+  },
+  confirmLocationButtonText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  validationResultText: {
+    fontSize: 12,
+    fontStyle: 'italic',
+    marginTop: 5,
   },
   mapContainer: {
     height: 200,
@@ -193,4 +225,5 @@ export const styles = StyleSheet.create({
     marginLeft: 8,
     fontSize: 14,
   },
+  breaker: { marginTop: 10 },
 });

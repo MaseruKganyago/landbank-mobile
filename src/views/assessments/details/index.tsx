@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import {
   View,
   Text,
@@ -6,10 +6,16 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { CustomIcon, FormHeader } from '../../../components';
 import { styles } from './styles';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {
+  validateLocation,
+  LocationValidationResult,
+} from '../../../utils/locationUtils';
 
 type AuthStackParamList = {
   AssessmentDetailsScreen: undefined;
@@ -26,6 +32,11 @@ type AssessmentDetailsScreenProps = NativeStackScreenProps<
 export const AssessmentDetailsScreen: FC<AssessmentDetailsScreenProps> = ({
   navigation,
 }) => {
+  const [isValidatingLocation, setIsValidatingLocation] = useState(false);
+  const [locationValidated, setLocationValidated] = useState(false);
+  const [validationResult, setValidationResult] =
+    useState<LocationValidationResult | null>(null);
+
   const applicantData = {
     address: '54 Marine Drive',
     applicantName: 'Ms Rosa Malindi',
@@ -34,7 +45,40 @@ export const AssessmentDetailsScreen: FC<AssessmentDetailsScreenProps> = ({
   };
 
   const onBackPress = () => navigation.navigate('AssessmentsScreen');
-  const onCheckIn = () => navigation.navigate('LandInfrastructureForm');
+  const onCheckIn = () => {
+    if (!locationValidated) {
+      Alert.alert(
+        'Location Not Confirmed',
+        'Please confirm your location before proceeding with the assessment.',
+        [{ text: 'OK' }],
+      );
+      return;
+    }
+    navigation.navigate('LandInfrastructureForm');
+  };
+
+  const handleConfirmLocation = async () => {
+    setIsValidatingLocation(true);
+    try {
+      const result = await validateLocation(applicantData.address, 0.5); // 500m tolerance
+      setValidationResult(result);
+      setLocationValidated(result.isValid);
+
+      Alert.alert(
+        result.isValid ? 'Location Confirmed' : 'Location Mismatch',
+        result.message,
+        [{ text: 'OK' }],
+      );
+    } catch (error) {
+      Alert.alert(
+        'Location Error',
+        'Failed to validate location. Please try again.',
+        [{ text: 'OK' }],
+      );
+    } finally {
+      setIsValidatingLocation(false);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -76,9 +120,51 @@ export const AssessmentDetailsScreen: FC<AssessmentDetailsScreenProps> = ({
           </View>
         </View>
 
-        {/* Confirm Location Text */}
+        {/* Confirm Location Section */}
         <View style={styles.confirmLocationSection}>
-          <Text style={styles.confirmLocationText}>Confirm Location</Text>
+          <View style={styles.confirmLocationHeader}>
+            <Text style={styles.confirmLocationText}>Confirm Location</Text>
+            <TouchableOpacity
+              style={[
+                styles.confirmLocationButton,
+                locationValidated && styles.confirmLocationButtonValidated,
+              ]}
+              onPress={handleConfirmLocation}
+              disabled={isValidatingLocation}
+            >
+              {isValidatingLocation ? (
+                <ActivityIndicator size="small" color="white" />
+              ) : (
+                <>
+                  <CustomIcon
+                    name={locationValidated ? 'checkmark-circle' : 'location'}
+                    size={16}
+                    color="white"
+                  />
+                  <Text
+                    style={[
+                      styles.confirmLocationButtonText,
+                      { marginLeft: 6 },
+                    ]}
+                  >
+                    {locationValidated
+                      ? 'Location Confirmed'
+                      : 'Confirm Location'}
+                  </Text>
+                </>
+              )}
+            </TouchableOpacity>
+          </View>
+          {validationResult && (
+            <Text
+              style={[
+                styles.validationResultText,
+                { color: validationResult.isValid ? '#27AE60' : '#E74C3C' },
+              ]}
+            >
+              {validationResult.message}
+            </Text>
+          )}
         </View>
 
         {/* Map Placeholder */}
@@ -103,6 +189,19 @@ export const AssessmentDetailsScreen: FC<AssessmentDetailsScreenProps> = ({
             <View style={styles.blueMarker}>
               <View style={styles.blueDot} />
             </View>
+          </View>
+
+          <View style={styles.breaker} />
+          <View style={styles.confirmLocationHeader}>
+            <TouchableOpacity
+              style={[
+                styles.confirmLocationButton,
+                locationValidated && styles.confirmLocationButtonValidated,
+              ]}
+              onPressIn={() => setLocationValidated(!locationValidated)}
+            >
+              <Text style={styles.resolveLocationText}>Resolve Location</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
