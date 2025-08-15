@@ -6,3 +6,7 @@ export { default as AssessmentCard } from './views/assessments/assesment-card';
 export { default as PhotoUploadBox } from './global/photoUploadBox';
 export { default as FormHeader } from './global/formHeader';
 export { default as LandInfrastructureForm } from './views/assessments/details/landInfrastructureForm';
+export { default as ToggleItem } from './global/toggleItem';
+export { default as EnvironmentalConditionsForm } from './views/assessments/details/enviromentalConditionsForm';
+export { default as OtpModal } from './global/otpModal';
+export { default as FinalAssessmentForm } from './views/assessments/details/finalAssessmentForm';

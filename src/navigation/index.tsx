@@ -5,7 +5,11 @@ import LoginScreen from '../views/login';
 import InspectorDashboard from '../views/inspector-dashboard';
 import AssessmentsScreen from '../views/assessments';
 import AssessmentDetailsScreen from '../views/assessments/details';
-import { LandInfrastructureForm } from '../components';
+import {
+  EnvironmentalConditionsForm,
+  FinalAssessmentForm,
+  LandInfrastructureForm,
+} from '../components';
 
 export type AuthStackParamList = {
   Login: undefined;
@@ -13,6 +17,8 @@ export type AuthStackParamList = {
   AssessmentsScreen: undefined;
   AssessmentDetailsScreen: undefined;
   LandInfrastructureForm: undefined;
+  EnvironmentalConditionsForm: undefined;
+  FinalAssessmentForm: undefined;
 };
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
@@ -36,6 +42,14 @@ const AppNavigator: React.FC = () => (
       <Stack.Screen
         name="LandInfrastructureForm"
         component={LandInfrastructureForm}
+      />
+      <Stack.Screen
+        name="EnvironmentalConditionsForm"
+        component={EnvironmentalConditionsForm}
+      />
+      <Stack.Screen
+        name="FinalAssessmentForm"
+        component={FinalAssessmentForm}
       />
     </Stack.Navigator>
   </NavigationContainer>

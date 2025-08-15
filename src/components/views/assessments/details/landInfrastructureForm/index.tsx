@@ -3,25 +3,30 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
-  Switch,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import { CustomIcon, FormHeader, PhotoUploadBox } from '../../../..';
+import {
+  CustomIcon,
+  FormHeader,
+  PhotoUploadBox,
+  ToggleItem,
+} from '../../../..';
 import { styles } from './styles';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 type AuthStackParamList = {
   LandInfrastructureForm: undefined;
   AssessmentDetailsScreen: undefined;
+  EnvironmentalConditionsForm: undefined;
 };
 
 type LandInfrastructureFormProps = NativeStackScreenProps<
   AuthStackParamList,
   'LandInfrastructureForm',
-  'AssessmentDetailsScreen'
+  'EnvironmentalConditionsForm'
 >;
 
 export const LandInfrastructureForm: FC<LandInfrastructureFormProps> = ({
@@ -60,6 +65,7 @@ export const LandInfrastructureForm: FC<LandInfrastructureFormProps> = ({
   };
 
   const onBackPress = () => navigation.navigate('AssessmentDetailsScreen');
+  const onNextPress = () => navigation.navigate('EnvironmentalConditionsForm');
 
   return (
     <SafeAreaView style={styles.container}>
@@ -127,7 +133,7 @@ export const LandInfrastructureForm: FC<LandInfrastructureFormProps> = ({
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Infrastructure Checklist:</Text>
 
-          <InfrastructureItem
+          <ToggleItem
             label="Fencing"
             value={formData.infrastructure.fencing}
             onValueChange={(value: any) =>
@@ -135,7 +141,7 @@ export const LandInfrastructureForm: FC<LandInfrastructureFormProps> = ({
             }
           />
 
-          <InfrastructureItem
+          <ToggleItem
             label="Boreholes"
             value={formData.infrastructure.boreholes}
             onValueChange={(value: any) =>
@@ -143,7 +149,7 @@ export const LandInfrastructureForm: FC<LandInfrastructureFormProps> = ({
             }
           />
 
-          <InfrastructureItem
+          <ToggleItem
             label="Water tanks"
             value={formData.infrastructure.waterTanks}
             onValueChange={(value: any) =>
@@ -151,7 +157,7 @@ export const LandInfrastructureForm: FC<LandInfrastructureFormProps> = ({
             }
           />
 
-          <InfrastructureItem
+          <ToggleItem
             label="Irrigation system"
             value={formData.infrastructure.irrigationSystem}
             onValueChange={(value: any) =>
@@ -159,7 +165,7 @@ export const LandInfrastructureForm: FC<LandInfrastructureFormProps> = ({
             }
           />
 
-          <InfrastructureItem
+          <ToggleItem
             label="Storage facilities"
             value={formData.infrastructure.storageFacilities}
             onValueChange={(value: any) =>
@@ -182,7 +188,7 @@ export const LandInfrastructureForm: FC<LandInfrastructureFormProps> = ({
 
       {/* Next Button */}
       <View style={styles.bottomSection}>
-        <TouchableOpacity style={styles.nextButton}>
+        <TouchableOpacity style={styles.nextButton} onPressIn={onNextPress}>
           <Text style={styles.nextButtonText}>Next</Text>
         </TouchableOpacity>
       </View>
@@ -200,17 +206,5 @@ export const LandInfrastructureForm: FC<LandInfrastructureFormProps> = ({
     </SafeAreaView>
   );
 };
-
-const InfrastructureItem = ({ label, value, onValueChange }: any) => (
-  <View style={styles.infrastructureItem}>
-    <Text style={styles.infrastructureLabel}>{label}</Text>
-    <Switch
-      value={value}
-      onValueChange={onValueChange}
-      trackColor={{ false: '#ddd', true: '#4A90E2' }}
-      thumbColor={value ? '#ffffff' : '#f4f3f4'}
-    />
-  </View>
-);
 
 export default LandInfrastructureForm;
